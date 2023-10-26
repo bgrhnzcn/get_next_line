@@ -6,7 +6,7 @@
 /*   By: buozcan <buozcan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:47:14 by buozcan           #+#    #+#             */
-/*   Updated: 2023/10/24 22:30:47 by buozcan          ###   ########.fr       */
+/*   Updated: 2023/10/26 16:17:29 by buozcan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 char	*refill(int fd, char *buffer)
 {
-	char	*temp;
-	int		byte_readed;
+	char		*temp;
+	long		byte_readed;
 
 	temp = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (temp == NULL)
@@ -28,6 +28,7 @@ char	*refill(int fd, char *buffer)
 		if (byte_readed == -1)
 		{
 			free(temp);
+			free(buffer);
 			return (NULL);
 		}
 		temp[byte_readed] = 0;
@@ -37,48 +38,50 @@ char	*refill(int fd, char *buffer)
 	return (buffer);
 }
 
-char	*get_line(char *buffer)
+char	*get_line_str(char *buffer)
 {
-	int		i;
-	char	*res;
+	size_t		i;
+	char		*res;
 
 	i = 0;
 	if (buffer[i] == 0)
 		return (NULL);
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	res = malloc(sizeof(char) * (i + 2));
+	if (buffer[i] == '\n')
+		res = malloc(sizeof(char) * (i + 2));
+	else
+		res = malloc(sizeof(char) * (i + 1));
 	if (res == NULL)
 		return (NULL);
-	i = -1;
-	while (buffer[++i] && buffer[i] != '\n')
-		res[i] = buffer[i];
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		(void)((res[i] = buffer[i]) && (i++, 1));
 	if (buffer[i] == '\n')
-	{
-		res[i] = buffer[i];
-		i++;
-	}
+		(void)((res[i] = buffer[i]) && (i++, 1));
 	res[i] = 0;
 	return (res);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[4096];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = refill(fd, buffer);
-	line = get_line(buffer);
-	buffer = cut_line(buffer, ft_strlen(line));
+	buffer[fd] = refill(fd, buffer[fd]);
+	if (buffer[fd] == NULL)
+		return (NULL);
+	line = get_line_str(buffer[fd]);
+	buffer[fd] = cut_line(buffer[fd], ft_strlen(line));
 	return (line);
 }
 
 char	*cut_line(char *buffer, int len)
 {
-	char	*temp;
-	int		i;
+	char		*temp;
+	size_t		i;
 
 	if (buffer[len] == 0)
 	{
@@ -89,7 +92,7 @@ char	*cut_line(char *buffer, int len)
 	if (temp == NULL)
 		return (NULL);
 	i = 0;
-	while (buffer[len] && buffer[len] != '\n')
+	while (buffer[len])
 		temp[i++] = buffer[len++];
 	temp[i] = 0;
 	free(buffer);
