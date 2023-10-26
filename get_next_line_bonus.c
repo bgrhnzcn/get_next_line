@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: buozcan <buozcan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:47:14 by buozcan           #+#    #+#             */
-/*   Updated: 2023/10/26 16:25:54 by buozcan          ###   ########.fr       */
+/*   Updated: 2023/10/26 16:49:59 by buozcan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,16 @@ char	*get_line_str(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[4096];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = refill(fd, buffer);
-	if (buffer == NULL)
+	buffer[fd] = refill(fd, buffer[fd]);
+	if (buffer[fd] == NULL)
 		return (NULL);
-	line = get_line_str(buffer);
-	buffer = cut_line(buffer, ft_strlen(line));
+	line = get_line_str(buffer[fd]);
+	buffer[fd] = cut_line(buffer[fd], ft_strlen(line));
 	return (line);
 }
 

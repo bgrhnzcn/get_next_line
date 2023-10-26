@@ -27,8 +27,8 @@
     "**/.*/**",
     "**/.vscode",
     "**/.vscode/**"
-],
-"files.associations": {
-	"unistd.h": "c"
-}
+  ],
+  "files.associations": {
+    "unistd.h": "c"
+  }
 }
