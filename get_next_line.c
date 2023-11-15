@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: buozcan <buozcan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bgrhnzcn <bgrhnzcn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:47:14 by buozcan           #+#    #+#             */
-/*   Updated: 2023/10/26 16:25:54 by buozcan          ###   ########.fr       */
+/*   Updated: 2023/11/15 04:49:35 by bgrhnzcn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*refill(int fd, char *buffer)
 	if (temp == NULL)
 		return (NULL);
 	byte_readed = 1;
-	while (!ft_strchr(buffer, '\n') && byte_readed)
+	while (!ft_strchr_gnl(buffer, '\n') && byte_readed)
 	{
 		byte_readed = read(fd, temp, BUFFER_SIZE);
 		if (byte_readed == -1)
@@ -32,7 +32,7 @@ char	*refill(int fd, char *buffer)
 			return (NULL);
 		}
 		temp[byte_readed] = 0;
-		buffer = ft_strjoin(buffer, temp);
+		buffer = ft_strjoin_gnl(buffer, temp);
 	}
 	free(temp);
 	return (buffer);
@@ -74,7 +74,7 @@ char	*get_next_line(int fd)
 	if (buffer == NULL)
 		return (NULL);
 	line = get_line_str(buffer);
-	buffer = cut_line(buffer, ft_strlen(line));
+	buffer = cut_line(buffer, ft_strlen_gnl(line));
 	return (line);
 }
 
@@ -88,7 +88,7 @@ char	*cut_line(char *buffer, int len)
 		free(buffer);
 		return (NULL);
 	}
-	temp = malloc((ft_strlen(buffer) - len + 1) * sizeof(char));
+	temp = malloc((ft_strlen_gnl(buffer) - len + 1) * sizeof(char));
 	if (temp == NULL)
 		return (NULL);
 	i = 0;
