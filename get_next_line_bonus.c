@@ -6,12 +6,11 @@
 /*   By: buozcan <buozcan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:47:14 by buozcan           #+#    #+#             */
-/*   Updated: 2023/10/26 16:49:59 by buozcan          ###   ########.fr       */
+/*   Updated: 2023/11/23 18:43:30 by buozcan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <stdio.h>
+#include "get_next_line_bonus.h"
 
 char	*refill(int fd, char *buffer)
 {
@@ -22,7 +21,7 @@ char	*refill(int fd, char *buffer)
 	if (temp == NULL)
 		return (NULL);
 	byte_readed = 1;
-	while (!ft_strchr(buffer, '\n') && byte_readed)
+	while (!ft_strchr_gnl(buffer, '\n') && byte_readed)
 	{
 		byte_readed = read(fd, temp, BUFFER_SIZE);
 		if (byte_readed == -1)
@@ -32,7 +31,7 @@ char	*refill(int fd, char *buffer)
 			return (NULL);
 		}
 		temp[byte_readed] = 0;
-		buffer = ft_strjoin(buffer, temp);
+		buffer = ft_strjoin_gnl(buffer, temp);
 	}
 	free(temp);
 	return (buffer);
@@ -74,7 +73,7 @@ char	*get_next_line(int fd)
 	if (buffer[fd] == NULL)
 		return (NULL);
 	line = get_line_str(buffer[fd]);
-	buffer[fd] = cut_line(buffer[fd], ft_strlen(line));
+	buffer[fd] = cut_line(buffer[fd], ft_strlen_gnl(line));
 	return (line);
 }
 
@@ -88,7 +87,7 @@ char	*cut_line(char *buffer, int len)
 		free(buffer);
 		return (NULL);
 	}
-	temp = malloc((ft_strlen(buffer) - len + 1) * sizeof(char));
+	temp = malloc((ft_strlen_gnl(buffer) - len + 1) * sizeof(char));
 	if (temp == NULL)
 		return (NULL);
 	i = 0;

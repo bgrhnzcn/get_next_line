@@ -6,13 +6,13 @@
 /*   By: buozcan <buozcan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 19:42:45 by buozcan           #+#    #+#             */
-/*   Updated: 2023/10/26 16:33:36 by buozcan          ###   ########.fr       */
+/*   Updated: 2023/11/23 18:33:09 by buozcan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-int	ft_strlen(char *str)
+int	ft_strlen_gnl(char *str)
 {
 	size_t	i;
 
@@ -24,7 +24,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strchr(char *str, char c)
+char	*ft_strchr_gnl(char *str, char c)
 {
 	if (str == NULL || c == 0)
 		return (NULL);
@@ -34,7 +34,7 @@ char	*ft_strchr(char *str, char c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_gnl(char *s1, char *s2)
 {
 	char			*res;
 	size_t			i;
@@ -47,7 +47,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	if (s2 == NULL)
 		return (s1);
-	res = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	res = malloc(ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1);
 	if (res == NULL)
 		return (NULL);
 	j = 0;
